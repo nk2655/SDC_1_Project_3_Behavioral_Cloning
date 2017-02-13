@@ -1,7 +1,7 @@
 # Behavioral Cloning
-##### - by NK Zou
+###### - by NK Zou
   
-##### The goals / steps of this project are the following:  
+#### The goals / steps of this project are the following:  
 * Use the simulator to collect data of good driving behavior  
 * Build, a convolution neural network in Keras that predicts steering angles from images  
 * Train and validate the model with a training and validation set  
@@ -13,8 +13,8 @@
 # Rubric Points
 
 ### 1- Required Files 
-##### Are all required files submitted?
-##### The submission includes a model.py file, drive.py, model.h5 and a writeup report.
+#### Are all required files submitted?
+#### The submission includes a model.py file, drive.py, model.h5 and a writeup report.
   
 * model.py - load data and preprocess it on the fly, in batch size portions to feed into model.  
 * model.h5 - model weights, containing a trained convolution neural network.  
@@ -23,10 +23,10 @@
 * writeup - summarization of the results.
 
 ### 2- Quality of Code  
-#### 2.1- Is the code functional?
-###### The model provided can be used to successfully operate the simulation.
+### 2.1- Is the code functional?
+##### The model provided can be used to successfully operate the simulation.
   
-* input ' python drive.py model.h5 ' into terminal to run this model.
+* Input ' python drive.py model.h5 ' into terminal to run this model.
 
 ### 2.2- Is the code usable and readable?
 #### The code in model.py uses a Python generator, if needed, to generate data for training rather than storing the training data in memory. The model.py code is clearly organized and comments are included where needed.
@@ -37,7 +37,6 @@
 ### 3.1- Has an appropriate model architecture been employed for the task?
 #### The neural network uses convolution layers with appropriate filter sizes. Layers exist to introduce nonlinearity into the model. The data is normalized in the model.
   
-插入图片  
 ![](output/section_3_1.JPG)  
 * This figure is a model architecture from NVIDIA. I modified it as 3 convolutional layers + 3 fully connected layers since I don't need a complicated model for this project.
    
@@ -145,7 +144,6 @@ y[flip_indices] = -y[flip_indices]
 ### Is the car able to navigate correctly on test data?
 #### No tire may leave the drivable portion of the track surface. The car may not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
   
-视频链接
 [Completed Project Video](https://twitter.com/samurai_robot/status/830292963829821440)   
   
 ### [Track Two] Suggestions to Make Your Project Stand Out!
