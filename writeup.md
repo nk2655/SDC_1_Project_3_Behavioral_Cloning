@@ -18,7 +18,6 @@
   
 * model.py - load data and preprocess it on the fly, in batch size portions to feed into model.  
 * model.h5 - model weights, containing a trained convolution neural network.  
-* model.json - model architecture in format Keras understands.  
 * drive.py - implements autonomous mode in simulator, run with model.h5 (and model.json).
 * writeup - summarization of the results.
 
