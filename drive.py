@@ -21,7 +21,6 @@ from keras.models import model_from_json
 import warnings
 import tensorflow as tf
 tf.python.control_flow_ops = tf
-from data import preprocess
 # 1- ######################################################
 
 sio = socketio.Server()
@@ -29,6 +28,11 @@ app = Flask(__name__)
 model = None
 prev_image_array = None
 
+def preprocess(image, top_offset=.375, bottom_offset=.125):
+    top = int(top_offset * image.shape[0])
+    bottom = int(bottom_offset * image.shape[0])
+    image = sktransform.resize(image[top:-bottom, :], (32, 128, 3))
+    return image
 
 @sio.on('telemetry')
 def telemetry(sid, data):
