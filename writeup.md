@@ -82,7 +82,7 @@ train_data, valid_data = model_selection.train_test_split(df, test_size=.2)
 print(len(train_data))
 print(len(valid_data))
 ```
-* The number of epochs is 100, the batch size of both train_gen and validation_gen is 128 since I use a data set from Udacity that only include 8000 images. I used 6428 images per training epoch and1608 images for validation. I chosen used Adam optimizer with 1e-4 learning rate.
+* The number of epochs is 20, the batch size of both train_gen and validation_gen is 128 since I created almost 22000 images as data via train model in simulator. I used 17403 images per training epoch and 4351 images for validation. I chosen used Adam optimizer with 1e-4 learning rate.
 
 ### 3.4- Is the training data chosen appropriately?
 #### Training data has been chosen to induce the desired behavior in the simulation (i.e. keeping the car on the track).
@@ -143,9 +143,9 @@ y[flip_indices] = -y[flip_indices]
 ### Is the car able to navigate correctly on test data?
 #### No tire may leave the drivable portion of the track surface. The car may not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
   
-[Completed Project Video](https://twitter.com/samurai_robot/status/830292963829821440)   
+[Completed Project Video](https://twitter.com/samurai_robot/status/832115430298750976)   
   
 ### [Track Two] Suggestions to Make Your Project Stand Out!
 ##### The simulator contains two tracks. To meet specifications, the car must successfully drive around track one. Track two is more difficult. See if you can get the car to stay on the road for track two as well.
   
-* I am failed to run on the track two, will collect more data and train the model to challenge it again.
+[Challenge Project Video](https://twitter.com/samurai_robot/status/832116301589946369)
