@@ -1,19 +1,11 @@
-import pandas as pd
-import os
-import numpy as np
-from sklearn import model_selection
-from keras import models, optimizers
-from keras.layers import convolutional, pooling, core
-import matplotlib.image as mpimg
-import random
+### 1- Function Set #######################################
 import skimage.transform as sktransform
-
-df = pd.io.parsers.read_csv('driving_log.csv')
-train_data, valid_data = model_selection.train_test_split(df, test_size=.2)
-
-### Cameras we will use
-cameras = ['left', 'center', 'right']
-cameras_steering_correction = [.25, 0., -.25]
+import numpy as np
+import matplotlib.image as mpimg
+import os
+import random
+from keras.callbacks import Callback
+import shutil
 
 def preprocess(image, top_offset=.375, bottom_offset=.125):
     top = int(top_offset * image.shape[0])
@@ -62,6 +54,30 @@ def generator(data, augment=True):
             y[flip_indices] = -y[flip_indices]
             yield (x, y)
 			
+# Callbacks function in model, use for save best model in each epoch, but it is not neccesary
+class weight_logger(Callback):
+    def __init__(self):
+        super(weight_logger, self).__init__()
+        self.weight_path = os.path.join('weights/')
+        shutil.rmtree(self.weight_path, ignore_errors=True)
+        os.makedirs(self.weight_path, exist_ok=True)
+    def on_epoch_end(self, epoch, logs={}):
+        self.model.save_weights(os.path.join(self.weight_path, 'model_epoch_{}.h5'.format(epoch + 1)))
+		
+### 2- Process ############################################
+import pandas as pd
+from sklearn import model_selection
+from keras import models, optimizers
+from keras.layers import convolutional, pooling, core
+
+### Load and split data
+df = pd.io.parsers.read_csv('driving_log.csv')
+train_data, valid_data = model_selection.train_test_split(df, test_size=.2)
+
+### Cameras setting
+cameras = ['left', 'center', 'right']
+cameras_steering_correction = [.25, 0., -.25]
+			
 ### Train Model
 model = models.Sequential()
 model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(32, 128, 3), activation='relu'))
@@ -79,10 +95,11 @@ model.add(core.Dense(20, activation='relu'))
 model.add(core.Dense(1))
 model.compile(optimizer=optimizers.Adam(lr=1e-04), loss='mean_squared_error')
 model.fit_generator(generator(train_data, augment=True),
-                    samples_per_epoch=train_data.shape[0],
-                    nb_epoch=100,
-                    validation_data=generator(valid_data, augment=False),
-                    nb_val_samples=valid_data.shape[0],
+samples_per_epoch=train_data.shape[0],
+					nb_epoch=20,
+					validation_data=generator(valid_data, augment=False),
+					nb_val_samples=valid_data.shape[0],
+					callbacks=[weight_logger()], # Add a callbacks to save best model in each epoch, but it is not neccesary
 					verbose=1)  # If verbose=1 or none, will show processbar, keep it if run without GPU
 
 ### Save Model, don't use model.save_weight in here, it save weight only, autonomous vehicle will not run
