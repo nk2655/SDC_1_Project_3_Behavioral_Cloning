@@ -102,8 +102,12 @@ print(len(valid_data))
 ### 4.1- Is the solution design documented?
 #### The README thoroughly discusses the approach taken for deriving and designing a model architecture fit for solving the given problem.
   
-* I have discussed the model architecture from section 3.1 to section 3.3.
-
+* The overall strategy for deriving a model architecture was to designed and trained a neural network that can steer a simulated car based on an image from its front-facing camera, the neural network was trained using behavioral cloning.  
+* My first step was to use a convolution neural network model similar to the NVIDIA. I thought this model might be appropriate because I removed convolutional layers from the NVIDIA architecture since the smaller input image means I did not need many convolution layers before getting down to a short, wide, deep image that could be reasonably fed to a fully connected layer. (NVIDIA model had to deal with a much wider variety of environments and lighting conditions than our simple simulator.)  
+* In order to gauge how well the model was working, I split data into a training and validation set. I found the model was overfitting. Then I add callbacks into the model to save best epoch training result to combat the overfitting.  
+* The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle runs like drunk driving and fell off the track, to improve the driving behavior in these cases, I tuned throttle value to fix it.  
+* At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.  
+  
 ### 4.2- Is the model architecture documented?
 ##### The README provides sufficient details of the characteristics and qualities of the architecture, such as the type of model used, the number of layers, the size of each layer. Visualizations emphasizing particular qualities of the architecture are encouraged.
   
