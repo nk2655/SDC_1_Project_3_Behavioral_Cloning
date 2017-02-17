@@ -68,7 +68,7 @@ class weight_logger(Callback):
 import pandas as pd
 from sklearn import model_selection
 from keras import models, optimizers
-from keras.layers import convolutional, pooling, core
+from keras.layers import convolutional, Lambda, ELU, pooling, core
 
 ### Load and split data
 df = pd.io.parsers.read_csv('driving_log.csv')
@@ -80,18 +80,24 @@ cameras_steering_correction = [.25, 0., -.25]
 			
 ### Train Model
 model = models.Sequential()
-model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(32, 128, 3), activation='relu'))
+model.add(Lambda(lambda x: x / 127.5 - 1.0, input_shape=(32, 128, 3)))
+model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(32, 128, 3)))
+model.add(ELU())
 model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
-model.add(convolutional.Convolution2D(32, 3, 3, activation='relu'))
+model.add(convolutional.Convolution2D(32, 3, 3))
+model.add(ELU())
 model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
-model.add(convolutional.Convolution2D(64, 3, 3, activation='relu'))
+model.add(convolutional.Convolution2D(64, 3, 3))
 model.add(pooling.MaxPooling2D(pool_size=(2, 2)))
 model.add(core.Flatten())
-model.add(core.Dense(500, activation='relu'))
+model.add(core.Dense(500))
+model.add(ELU())
 model.add(core.Dropout(.5))
-model.add(core.Dense(100, activation='relu'))
+model.add(core.Dense(100))
+model.add(ELU())
 model.add(core.Dropout(.25))
-model.add(core.Dense(20, activation='relu'))
+model.add(core.Dense(20))
+model.add(ELU())
 model.add(core.Dense(1))
 model.compile(optimizer=optimizers.Adam(lr=1e-04), loss='mean_squared_error')
 model.fit_generator(generator(train_data, augment=True),
