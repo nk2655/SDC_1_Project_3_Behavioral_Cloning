@@ -72,9 +72,11 @@ model.compile(optimizer=optimizers.Adam(lr=1e-04), loss='mean_squared_error')
 train_data, valid_data = model_selection.train_test_split(df, test_size=.2)  
   
 model.add(core.Flatten())  
-model.add(core.Dense(500, activation='relu'))  
+model.add(core.Dense(500))  
+model.add(ELU())  
 model.add(core.Dropout(.5))  
-model.add(core.Dense(100, activation='relu'))  
+model.add(core.Dense(100))  
+model.add(ELU())  
 model.add(core.Dropout(.25))  
 ```    
 
